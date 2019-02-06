@@ -578,7 +578,7 @@
                         <Font size="33.0" />
                     </font>
                 </Label>
-                <RadioButton fx:id="musicOnOff" contentDisplay="CENTER" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#musicOnOffRadioButtonChecked" prefHeight="40.0" prefWidth="100.0" text="Mute" textAlignment="CENTER">
+                <RadioButton fx:id="mute" contentDisplay="CENTER" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#muteRadioButtonChecked" prefHeight="40.0" prefWidth="100.0" text="Mute" textAlignment="CENTER">
                     <font>
                         <Font size="18.0" />
                     </font>
