@@ -18,6 +18,11 @@ import java.io.IOException;
 
 public class Controller {
     private static final Duration TRANSITION_LEN = new Duration(200);
+    //Looks like many instances of Controller are created
+    //In particular whenever a new game starts..
+    //
+    private static int instances = 0;
+    private final int id;
     @FXML
     public RadioButton mute;
     @FXML
@@ -38,16 +43,9 @@ public class Controller {
     public Label time;
     @FXML
     public Label tries;
-
     private boolean animating;
 
-    //Looks like many instances of Controller are created
-    //In particular whenever a new game starts..
-    //
-    private static int instances = 0;
-    private final int id;
-
-    public Controller(){
+    public Controller() {
         id = ++instances;
         System.out.printf("%s object #%d created\n", this.getClass().getSimpleName(), id);
     }
@@ -61,14 +59,14 @@ public class Controller {
             time.textProperty().bind(Game.timeProperty);
             tries.textProperty().bind(Game.triesProperty);
             animating = false;
-        }else{
+        } else {
             System.out.println("Controller: NOT binding properties, because..");
             System.out.printf(
-                "score != null : %b,  time != null : %b, tries != null : %b\n",
-                score != null, time != null, tries != null
+                    "score != null : %b,  time != null : %b, tries != null : %b\n",
+                    score != null, time != null, tries != null
             );
         }
-        if(mute != null) {
+        if (mute != null) {
             mute.setSelected(Main.isMuted);
         }
     }
@@ -217,5 +215,20 @@ public class Controller {
             return new Scene(root, 800, 800);
         }
         return new Scene(root, 600, 600);
+    }
+    //except the current controller and the first (#1) rest are garbage collected...
+    @Override
+    protected void finalize() throws Throwable
+    {
+        try
+        {
+            System.err.println("Object destroyed of type"
+                    + this.getClass().toString());
+            System.err.println("#id:"+this.id);
+        }
+        finally
+        {
+            super.finalize();
+        }
     }
 }
