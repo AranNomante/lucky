@@ -10,11 +10,15 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" stylesheets="@Game.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.sample.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" stylesheets="@Game.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.sample.Controller">
     <center>
-        <GridPane fx:id="pane" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+        <GridPane fx:id="pane" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -547,7 +551,7 @@
             <children>
                 <Label prefHeight="25.0" prefWidth="100.0" text="Score:">
                     <font>
-                        <Font size="30.0" />
+                        <Font size="18.0" />
                     </font>
                <HBox.margin>
                   <Insets left="10.0" />
@@ -555,52 +559,119 @@
                 </Label>
                 <Label fx:id="score" prefHeight="25.0" prefWidth="130.0">
                     <font>
-                        <Font size="33.0" />
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <Label prefHeight="25.0" prefWidth="100.0" text="Tries:">
                     <font>
-                        <Font size="36.0" />
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <Label fx:id="tries" prefHeight="25.0" prefWidth="100.0">
                     <font>
-                        <Font size="33.0" />
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <Label prefHeight="25.0" prefWidth="100.0" text="Time:">
                     <font>
-                        <Font size="33.0" />
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <Label fx:id="time" prefHeight="25.0" prefWidth="100.0">
                     <font>
-                        <Font size="33.0" />
+                        <Font size="18.0" />
                     </font>
                 </Label>
-                <RadioButton fx:id="mute" contentDisplay="CENTER" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#muteRadioButtonChecked" prefHeight="40.0" prefWidth="100.0" text="Mute" textAlignment="CENTER">
+                <RadioButton fx:id="mute" contentDisplay="CENTER" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#muteRadioButtonChecked" prefHeight="25.0" prefWidth="75.0" text="Mute" textAlignment="CENTER">
                     <font>
-                        <Font size="18.0" />
+                        <Font size="13.0" />
                     </font>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <HBox.margin>
-                        <Insets right="10.0" top="10.0" />
+                        <Insets right="10.0" top="5.0" />
                     </HBox.margin>
                 </RadioButton>
-                <Button fx:id="menu" focusTraversable="false" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#menuButtonClicked" prefHeight="25.0" prefWidth="100.0" text="Menu" textAlignment="CENTER">
+                <Button fx:id="menu" focusTraversable="false" minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#menuButtonClicked" prefWidth="75.0" text="Menu" textAlignment="CENTER">
                     <font>
-                        <Font size="18.0" />
+                        <Font size="13.0" />
                     </font>
                     <effect>
                         <Glow />
                     </effect>
                     <HBox.margin>
-                        <Insets right="10.0" top="10.0" />
+                        <Insets right="10.0" top="5.0" />
                     </HBox.margin>
                 </Button>
             </children>
         </HBox>
     </top>
+   <left>
+      <VBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Circle fx:id="black" radius="20.0" stroke="BLACK" strokeType="INSIDE">
+               <fill>
+                  <LinearGradient cycleMethod="REFLECT" endX="1.0" endY="0.7633587859059108">
+                     <stops>
+                        <Stop color="#0d2134" />
+                        <Stop color="#614141" offset="0.25190839694656486" />
+                        <Stop color="#614141" offset="0.38835616438356163" />
+                        <Stop color="#9a3939" offset="0.4685820349262783" />
+                        <Stop color="WHITE" offset="0.5389312977099234" />
+                        <Stop color="#090202" offset="0.6330910802049563" />
+                        <Stop color="#7f1a1a" offset="0.7481804872947815" />
+                        <Stop color="WHITE" offset="0.8193715361288298" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </fill>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Circle>
+            <Circle fx:id="blue" layoutX="32.0" layoutY="70.0" radius="20.0" stroke="BLACK" strokeType="INSIDE">
+               <fill>
+                  <LinearGradient cycleMethod="REFLECT" endX="1.0" endY="0.7633587859059108">
+                     <stops>
+                        <Stop color="#0d2134" />
+                        <Stop color="#231a7d" offset="0.29932552546272034" />
+                        <Stop color="WHITE" offset="0.7002875666631807" />
+                        <Stop color="#221a7d" offset="0.8411847746523058" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+            <Circle fx:id="yellow" layoutX="32.0" layoutY="110.0" radius="20.0" stroke="BLACK" strokeType="INSIDE">
+               <fill>
+                  <LinearGradient cycleMethod="REFLECT" endX="1.0" endY="0.7633587859059108">
+                     <stops>
+                        <Stop color="#0d2134" />
+                        <Stop color="#fbff00" offset="0.38835616438356163" />
+                        <Stop color="WHITE" offset="0.7186081773502039" />
+                        <Stop color="#b0c511" offset="0.9053435114503817" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+            <Circle fx:id="red" layoutX="35.0" layoutY="30.0" radius="20.0" stroke="BLACK" strokeType="INSIDE">
+               <fill>
+                  <LinearGradient cycleMethod="REFLECT" endX="1.0" endY="0.7633587859059108">
+                     <stops>
+                        <Stop color="#0d2134" />
+                        <Stop color="#ff0808" offset="0.2417912788873784" />
+                        <Stop color="WHITE" offset="0.7430356582662343" />
+                        <Stop color="#ea3131" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+         </children>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </VBox>
+   </left>
 </BorderPane>

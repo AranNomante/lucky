@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class Controller {
     //In particular whenever a new game starts..
     //
     private static int instances = 0;
+    private static Circle[] circles = new Circle[4];
     private final int id;
     @FXML
     public RadioButton mute;
@@ -43,6 +45,17 @@ public class Controller {
     public Label time;
     @FXML
     public Label tries;
+    @FXML
+    public Circle black;
+    @FXML
+    public Circle red;
+    @FXML
+    public Circle blue;
+    @FXML
+    public Circle yellow;
+    private FadeTransition transitionButton;
+    private FadeTransition transitionIndicatorDisappear;
+    private FadeTransition transitionIndicatorAppear;
     private boolean animating;
 
     public Controller() {
@@ -52,13 +65,26 @@ public class Controller {
 
     // warning: mute can be null when this method called during load victory scene
     // some fxml voodoo at work, intellij doesn't think anyone calls this method
+    /// (maybe in fxml controller has to be defined or initialize has to be public)
+    /// tried muting and loading victory scene and unmuting and trying nothing happened didn't understand why would it be a problem
     public void initialize() {
-        if (score != null && time != null && tries != null) {
-            System.out.println("Controller: Binding properties..");
+        if (score != null && time != null && tries != null && blue != null && red != null
+                && black != null && yellow != null) {
+            System.out.println("Controller: Binding properties.. game");
             score.textProperty().bind(Game.scoreProperty);
             time.textProperty().bind(Game.timeProperty);
             tries.textProperty().bind(Game.triesProperty);
             animating = false;
+            transitionButton = new FadeTransition();
+            transitionIndicatorDisappear = new FadeTransition();
+            transitionIndicatorAppear = new FadeTransition();
+            hideIndicators();
+            System.out.println("Game screen loaded");
+        } else if (score != null && time != null && tries != null) {
+            System.out.println("Controller: Binding properties.. victory");
+            score.textProperty().bind(Game.scoreProperty);
+            time.textProperty().bind(Game.timeProperty);
+            tries.textProperty().bind(Game.triesProperty);
         } else {
             System.out.println("Controller: NOT binding properties, because..");
             System.out.printf(
@@ -105,6 +131,50 @@ public class Controller {
         }
     }
 
+    private void indicatorAnim(String color) {
+        for (Circle circle :
+                circles) {
+            if (color.equals(circle.getId()) && circle.isVisible()) {
+                break;
+            } else if (color.equals(circle.getId())) appear(circle);
+            else if (circle.isVisible()) disappear(circle);
+        }
+    }
+
+    private void appear(Circle circle) {
+        transitionIndicatorAppear.setNode(circle);
+        transitionIndicatorAppear.setDuration(TRANSITION_LEN);
+        transitionIndicatorAppear.setFromValue(0.0);
+        transitionIndicatorAppear.setToValue(1.0);
+        transitionIndicatorAppear.setCycleCount(1);
+        transitionIndicatorAppear.play();
+        circle.setVisible(true);
+    }
+
+    private void disappear(Circle circle) {
+        transitionIndicatorDisappear.setNode(circle);
+        transitionIndicatorDisappear.setDuration(TRANSITION_LEN);
+        transitionIndicatorDisappear.setFromValue(1.0);
+        transitionIndicatorDisappear.setToValue(0.0);
+        transitionIndicatorDisappear.setCycleCount(1);
+        transitionIndicatorDisappear.setOnFinished(actionEvent -> circle.setVisible(false));
+        transitionIndicatorDisappear.play();
+    }
+
+    private void hideIndicators() {
+        blue.setVisible(false);
+        red.setVisible(false);
+        yellow.setVisible(false);
+        yellow.setId("yellow");
+        black.setId("black");
+        red.setId("red");
+        blue.setId("blue");
+        circles[0] = black;
+        circles[1] = blue;
+        circles[2] = yellow;
+        circles[3] = red;
+    }
+
     public void gameButtonClicked(ActionEvent event) {
         ObservableList<Node> buttons = pane.getChildren();
         Button button = (Button) event.getSource();
@@ -113,25 +183,24 @@ public class Controller {
         int row = (index - index % 10) / 10;
         if (!((Button) event.getSource()).getStyleClass().toString().equals("button button-treasure") &&
                 !((Button) event.getSource()).getStyleClass().toString().equals("button button-uncovered")) {
-
-            FadeTransition transition = new FadeTransition();
-            transition.setNode((Button) event.getSource());
-            transition.setDuration(TRANSITION_LEN);
-            transition.setFromValue(1.0);
-            transition.setToValue(0.0);
-            transition.setCycleCount(1);
-            transition.setOnFinished(actionEvent -> {
+            indicatorAnim(Game.clickValue(row, column));
+            transitionButton.setNode((Button) event.getSource());
+            transitionButton.setDuration(TRANSITION_LEN);
+            transitionButton.setFromValue(1.0);
+            transitionButton.setToValue(0.0);
+            transitionButton.setCycleCount(1);
+            transitionButton.setOnFinished(actionEvent -> {
 
                 if (!((Button) event.getSource()).getStyleClass().toString().equals("button button-treasure") &&
                         !((Button) event.getSource()).getStyleClass().toString().equals("button button-uncovered")) {
 
-                    transition.setFromValue(0.0);
-                    transition.setToValue(1.0);
+                    transitionButton.setFromValue(0.0);
+                    transitionButton.setToValue(1.0);
                     System.out.println(((Button) event.getSource()).getStyleClass().toString());
                     ((Button) event.getSource()).getStyleClass().remove("button-covered");
                     ((Button) event.getSource()).getStyleClass().add(Game.click(row, column));
-                    transition.play();
-                    transition.setOnFinished(ActionEvent -> {
+                    transitionButton.play();
+                    transitionButton.setOnFinished(ActionEvent -> {
                         animating = false
                         ;
                         if (((Button) event.getSource()).getStyleClass().toString().equals("button button-treasure")) {
@@ -144,7 +213,7 @@ public class Controller {
             System.out.printf("Animating: %b\n", animating);
             if (!animating) {
                 animating = true;
-                transition.play();
+                transitionButton.play();
                 Main.playSFX("sfx_card_unfold");
             }
         }
@@ -212,22 +281,19 @@ public class Controller {
     private Scene getScene(String name) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(name + ".fxml"));
         if (name.equals("game")) {
-            return new Scene(root, 800, 800);
+            return new Scene(root, 700, 700);
         }
         return new Scene(root, 600, 600);
     }
+
     //except the current controller and the first (#1) rest are garbage collected...
     @Override
-    protected void finalize() throws Throwable
-    {
-        try
-        {
+    protected void finalize() throws Throwable {
+        try {
             System.err.println("Object destroyed of type"
                     + this.getClass().toString());
-            System.err.println("#id:"+this.id);
-        }
-        finally
-        {
+            System.err.println("#id:" + this.id);
+        } finally {
             super.finalize();
         }
     }

@@ -21,3 +21,12 @@
     -fx-background-color: linear-gradient(#660033, black);
 
 }
+.label-red{
+    -fx-text-fill: radial-gradient(radius 50%,#FF0000,#D01F1F);
+}
+.label-yellow{
+    -fx-text-fill: radial-gradient(radius 50%,#F4FFAD,#CBE235);
+}
+.label-blue{
+    -fx-text-fill: radial-gradient(radius 50%,#3D1FD0,#4B4084);
+}
