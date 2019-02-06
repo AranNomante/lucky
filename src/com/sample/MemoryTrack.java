@@ -19,7 +19,7 @@ class MemoryTrack {
             String stamp = ("" + ts).substring(0, ("" + ts).lastIndexOf(":"));
             stamp = stamp.replace(":", "-");
             printStream = new PrintStream("memLog/" + "Memory log " + stamp + ".txt");
-            boolean alert=false;
+            boolean alert = false;
             int start = 0;
             String mib = " MiB";
             String message = "There was a rise until time: ";
@@ -43,9 +43,9 @@ class MemoryTrack {
                     String slope = (new Double(slopeStep)).longValue() + "%";
                     long minimum = (data.get(start)).longValue();
                     long maximum = (data.get(index)).longValue();
-                    if ((avg>200 || maximum>400) && !alert){
-                        alert=true;
-                        printStream=new PrintStream("memAlertLog/" + "Alert log " + stamp + ".txt");
+                    if ((avg > 200 || maximum > 400) && !alert) {
+                        alert = true;
+                        printStream = new PrintStream("memAlertLog/" + "Alert log " + stamp + ".txt");
                     }
                     printStream.println(end);
                     printStream.println(message + index + " from: " + start);
@@ -92,12 +92,12 @@ class MemoryTrack {
         if (files != null) {
             if (files.length != 0) {
                 System.out.println(files.length);
-                if (files.length>9){
+                if (files.length > 9) {
                     System.out.println("cleaning initiated");
-                    for (int i = 0; i < files.length-4 ; i++) {
+                    for (int i = 0; i < files.length - 4; i++) {
                         System.out.println(files[i].delete());
                     }
-                }else {
+                } else {
                     System.out.println("no cleaning required");
                 }
             }
